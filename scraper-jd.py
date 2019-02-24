@@ -343,7 +343,7 @@ class JDWrapper(object):
                 self.cookies[k] = v
 
             ## save QR code
-            image_file = 'qr.png'
+            image_file = '../myproject/static/qr.png'
             with open (image_file, 'wb') as f:
                 for chunk in resp.iter_content(chunk_size=1024):
                     f.write(chunk)
