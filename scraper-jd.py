@@ -346,12 +346,13 @@ class JDWrapper(object):
                 self.cookies[k] = v
 
             ## save QR code
-            image_file = '../myproject/static/qr.png'
+            image_file = '/var/www/html/qr.png'
             with open (image_file, 'wb') as f:
                 for chunk in resp.iter_content(chunk_size=1024):
                     f.write(chunk)
-            
+            print('save qr.png ok')
             ## scan QR code with phone
+            '''
             if os.name == "nt": 
                 # for windows
                 os.system('start ' + image_file)
@@ -362,7 +363,7 @@ class JDWrapper(object):
                 else:
                     # for Mac platform
                     os.system("open " + image_file)
-
+            '''
             # step 3: check scan result
             ## mush have
             self.headers['Host'] = 'qr.m.jd.com' 

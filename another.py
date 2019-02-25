@@ -44,7 +44,7 @@ class JD:
 
 
         #Panic_time = datetime.datetime(2019, 2, 26, 10, 0)
-        Panic_time = datetime.datetime(2019, 2, 25, 22, 30)
+        Panic_time = datetime.datetime(2019, 2, 25, 22, 40)
 
         Remaining_time = (Panic_time - datetime.datetime.now()).second
         while Remaining_time > 2:
