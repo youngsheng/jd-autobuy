@@ -39,28 +39,27 @@ class JD:
         self.goods_id = goods_url[
             goods_url.rindex('/') + 1:goods_url.rindex('.')]
         #self.goods_id = '100003434260'
-        JD.headers['referer'] = goods_ur
+        JD.headers['referer'] = goods_url
         buy_url = self.buy_url.format(self.goods_id)
 
 
         #Panic_time = datetime.datetime(2019, 2, 26, 10, 0)
-        Panic_time = datetime.datetime(2019, 2, 25, 22, 40)
+        Panic_time = datetime.datetime(2019, 2, 25, 22, 55)
 
-        Remaining_time = (Panic_time - datetime.datetime.now()).second
+        Remaining_time = (Panic_time - datetime.datetime.now()).seconds
         while Remaining_time > 2:
             print('剩余', Remaining_time, '秒')
             time.sleep(1)
-            Remaining_time = (datetime.datetime.now() - Panic_time).second
+            Remaining_time = ( Panic_time - datetime.datetime.now()).seconds
         
-        while((Panic_time - datetime.datetime.now()).second > 0):
+        while((Panic_time - datetime.datetime.now()).seconds > 0):
             pass
 
 
         self.session.get(url=buy_url, headers=JD.headers)  # 添加到购物车
 
-        order_id = None
         count = 0
-        while(order_id == None):
+        while(True):
             self.session.get(url=self.pay_url, headers=JD.headers)  # 提交订单
             response = self.session.post(
                 url=self.pay_success, headers=JD.headers)     # 提交订单
@@ -68,11 +67,13 @@ class JD:
             count = count + 1
             if count > 3:
                 break
+            
+            if order_id:
+                print('抢购成功订单号:', order_id)
+                break
+            else:
+                print('抢购失败')
             time.sleep(0.5)
-        if order_id:
-            print('抢购成功订单号:', order_id)
-        else:
-            print('抢购失败')
         print('count:', count)
 
 if __name__ == "__main__":
