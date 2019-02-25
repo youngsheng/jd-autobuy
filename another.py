@@ -1,7 +1,7 @@
 import requests, pickle
 import time
 import json
-
+import datetime
 
 class JD:
     headers = {
@@ -38,15 +38,43 @@ class JD:
         goods_url = input('商品链接：')
         self.goods_id = goods_url[
             goods_url.rindex('/') + 1:goods_url.rindex('.')]
-        JD.headers['referer'] = goods_url
+        #self.goods_id = '100003434260'
+        JD.headers['referer'] = goods_ur
         buy_url = self.buy_url.format(self.goods_id)
+
+
+        #Panic_time = datetime.datetime(2019, 2, 26, 10, 0)
+        Panic_time = datetime.datetime(2019, 2, 25, 22, 30)
+
+        Remaining_time = (Panic_time - datetime.datetime.now()).second
+        while Remaining_time > 2:
+            print('剩余', Remaining_time, '秒')
+            time.sleep(1)
+            Remaining_time = (datetime.datetime.now() - Panic_time).second
+        
+        while((Panic_time - datetime.datetime.now()).second > 0):
+            pass
+
+
         self.session.get(url=buy_url, headers=JD.headers)  # 添加到购物车
-        self.session.get(url=self.pay_url, headers=JD.headers)  # 提交订单
-        response = self.session.post(
-            url=self.pay_success, headers=JD.headers)     # 提交订单
-        order_id = json.loads(response.text).get('orderId')
+
+        order_id = None
+        count = 0
+        while(order_id == None):
+            self.session.get(url=self.pay_url, headers=JD.headers)  # 提交订单
+            response = self.session.post(
+                url=self.pay_success, headers=JD.headers)     # 提交订单
+            order_id = json.loads(response.text).get('orderId')
+            count = count + 1
+            if count > 3:
+                break
+            time.sleep(0.5)
         if order_id:
             print('抢购成功订单号:', order_id)
+        else:
+            print('抢购失败')
+        print('count:', count)
 
-jd = JD()
-jd.login()	# http://loghb.com
+if __name__ == "__main__":
+    jd = JD()
+    jd.login()	# http://loghb.com

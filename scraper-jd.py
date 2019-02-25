@@ -29,6 +29,9 @@ import sys
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
 
+import another
+
+
 # get function name
 FuncName = lambda n=0: sys._getframe(n + 1).f_code.co_name
 
@@ -759,8 +762,12 @@ def main(options):
         if not jd.login_by_QR():
             return
 
+    jd = another.JD()
+    jd.login()
+    '''
     while not jd.buy(options) and options.flush:
         time.sleep(options.wait / 1000.0)
+    '''
 
 
 if __name__ == '__main__':
